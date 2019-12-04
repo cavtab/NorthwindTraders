@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: kompose --provider openshift --file docker-compose.yml convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: data-sql
+  name: data-sql
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: data-sql
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: data-sql
+    spec:
+      containers:
+      - env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: Pass@word
+        image: ' '
+        name: data-sql
+        ports:
+        - containerPort: 1433
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - data-sql
+      from:
+        kind: ImageStreamTag
+        name: data-sql:2017-latest
+    type: ImageChange
+status: {}
