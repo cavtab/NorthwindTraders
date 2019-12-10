@@ -12,5 +12,10 @@ pipeline {
         openshiftDeploy 'testappdotnet22ct'
       }
     }
+    stage('verify ') {
+      steps {
+        openshiftVerifyDeployment 'testappdotnet22ct'
+      }
+    }
   }
 }
